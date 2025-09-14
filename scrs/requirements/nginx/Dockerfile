@@ -9,9 +9,9 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
 # nginx SSL
 RUN mkdir /etc/nginx/ssl
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-       -out /etc/nginx/ssl/vbachele.crt \
-       -keyout /etc/nginx/ssl/vbachele.key \
-       -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=vbachele/CN=vbachele/"
+       -out /etc/nginx/ssl/mqwa.crt \
+       -keyout /etc/nginx/ssl/mqwa.key \
+       -subj "/C=FR/ST=Paris/L=Paris/O=42 School/OU=mamahtal/CN=mamahtal/"
 
 COPY ./conf/nginx.conf /etc/nginx/conf.d
 
