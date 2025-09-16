@@ -5,19 +5,16 @@ down:
 	@docker compose -f ./scrs/docker-compose.yml down
 
 re:
-	@docker compose -f scrs/docker-compose.yml up -d --build
+	@docker compose -f ./scrs/docker-compose.yml up -d --build
 
 clean:
-	@docker compose -f scrs/docker-compose.yml down -v
+	@docker compose -f ./scrs/docker-compose.yml down -v
 
 fclean:
-	@if [ -n "$$(docker ps -qa)" ]; then docker stop $$(docker ps -qa); fi
-	@if [ -n "$$(docker ps -qa)" ]; then docker rm $$(docker ps -qa); fi
-	@if [ -n "$$(docker images -qa)" ]; then docker rmi -f $$(docker images -qa); fi
-	@if [ -n "$$(docker volume ls -q)" ]; then docker volume rm $$(docker volume ls -q); fi
-	@if [ -n "$$(docker network ls -q | grep -vE 'bridge|host|none')" ]; then docker network rm $$(docker network ls -q | grep -vE 'bridge|host|none'); fi
+	@docker ps -qa | grep . >/dev/null && docker stop $$(docker ps -qa) || true
+	@docker ps -qa | grep . >/dev/null && docker rm $$(docker ps -qa) || true
+	@docker images -qa | grep . >/dev/null && docker rmi -f $$(docker images -qa) || true
+	@docker volume ls -q | grep . >/dev/null && docker volume rm $$(docker volume ls -q) || true
+	@docker network ls -q | grep -vE 'bridge|host|none' | grep . >/dev/null && docker network rm $$(docker network ls -q | grep -vE 'bridge|host|none') || true
 
-prune:
-	docker system prune -af --volumes
-
-.PHONY: all re down clean fclean prune
+.PHONY: all re down clean fclean
