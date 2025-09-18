@@ -20,6 +20,7 @@ fclean:
 data:
 		sudo rm -rf ~/data
 		mkdir -p ~/data/mysql ~/data/wordpress
+		cp ../.env ./srcs/
 
 re: clean data up
 
