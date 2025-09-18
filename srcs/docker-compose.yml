@@ -1,55 +1,56 @@
 services:
-	nginx:
-		container_name: nginx
-		build: ./requirements/nginx
-		restart: unless-stopped
-		ports:
-			- 443:443
-		volumes:
-			- wordpress_data:/var/www/html
-		networks:
-			- network
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    restart: unless-stopped
+    ports:
+      - 443:443
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - network
 
-	mariadb:
-		container_name: mariadb
-		build: ./requirements/mariadb
-		restart: unless-stopped
-		volumes:
-			- mariadb_data:/var/lib/mysql
-		networks:
-			- network
-		env_file:
-			- .env
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    restart: unless-stopped
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - network
+    env_file:
+      - .env
 
-wordpress:
-		container_name: wordpress
-		build:
-			context: ./requirements/wordpress
-			dockerfile: Dockerfile
-		restart: unless-stopped
-		depends_on:
-			- mariadb
-		volumes:
-			- wordpress_data:/var/www/html
-		networks:
-			- network
-		env_file:
-			- .env
+  wordpress:
+    container_name: wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - network
+    env_file:
+      - .env
 
 volumes:
-	mariadb_data:
-		driver: local
-		driver_opts:
-			type: none
-			device: /home/mamahtal/data/mysql
-			o: bind
-	wordpress_data:
-		driver: local
-		driver_opts:
-			type: none
-			device: /home/mamahtal/data/wordpress
-			o: bind
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mamahtal/data/mysql
+      o: bind
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mamahtal/data/wordpress
+      o: bind
 
 networks:
-	network:
-		driver: bridge
+  network:
+    driver: bridge
