@@ -1,32 +1,28 @@
-FROM debian:buster
+FROM debian:bookworm
 
-RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
-    apt-get -o Acquire::Check-Valid-Until=false update && \
-    apt-get -y install wget curl bash php php-cgi php-mysql php-fpm php-pdo php-gd php-cli php-mbstring redis php-redis && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+	apt-get -y install wget curl php php-cgi php-mysql php-fpm php-pdo php-gd php-cli php-mbstring && \
+	rm -rf /var/lib/apt/lists/*
 
-# I need to install wp_cli command and put it in the right directory /usr/local/bin
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-  && chmod +x wp-cli.phar \
-  && mv wp-cli.phar /usr/local/bin/wp
+	&& chmod +x wp-cli.phar \
+	&& mv wp-cli.phar /usr/local/bin/wp
 
-# Copy the .conf in the html directory
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
+WORKDIR /usr/src/
 
-#Create the folder to enable php start
-RUN mkdir /run/php
+RUN wget http://wordpress.org/latest.tar.gz && \
+	tar -xzvf latest.tar.gz && \
+	rm -rf /usr/src/latest.tar.gz
 
-#we copy the script, give the right to launch it in local on our computer
-COPY ./tools/create_wordpress.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/create_wordpress.sh
-ENTRYPOINT ["/usr/local/bin/create_wordpress.sh"]
+COPY ./scripts/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-#We go the html directory
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/
+
 WORKDIR /var/www/html/
 
-#We expose the 9000 port
-EXPOSE 9000
-
 #Launch PHP FPM in foreground and ignore deamonize from conf file (-F)
-CMD ["/usr/sbin/php-fpm7.3", "-F"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["/usr/sbin/php-fpm8.2", "-F"]
 
+EXPOSE 9000
