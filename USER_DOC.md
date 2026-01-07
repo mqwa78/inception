@@ -65,14 +65,14 @@ This command should only be used for troubleshooting or a full cleanup.
 ### WordPress Website
 
 Open a web browser and go to:
-https://login42.42.fr
+https://mamahtal.42.fr
 
 A browser warning may appear because a self-signed SSL certificate is used.
 
 ### WordPress Administration Panel
 
 To access the WordPress administration interface, go to:
-https://login42.42.fr/wp-admin
+https://mamahtal.42.fr/wp-admin
 
 Log in using the administrator credentials defined in the `.env` file.
 
