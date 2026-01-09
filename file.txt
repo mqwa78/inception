@@ -1,0 +1,16 @@
+DOMAIN_NAME=mamahtal.42.fr
+
+MYSQL_HOSTNAME=mariadb
+MYSQL_DATABASE=wordpress
+MYSQL_USER=mqwa
+MYSQL_PASSWORD=mqwa42
+MYSQL_ROOT_PASSWORD=mqwa42
+
+WP_URL=https://mamahtal.42.fr
+WP_TITLE=Bonjour
+WP_ADMIN_USER=user1
+WP_ADMIN_PASSWORD=user1
+WP_ADMIN_EMAIL=user1@example.com
+WP_USER=user2
+WP_USER_PASSWORD=user2
+WP_USER_EMAIL=user2@example.com
